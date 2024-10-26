@@ -1,3 +1,12 @@
+<?php
+session_start();
+include 'conexion.php'; // Asegúrate de que la ruta es correcta
+
+// Obtener productos
+$query = "SELECT * FROM productos WHERE disponible = 1";
+$productos = $pdo->query($query)->fetchAll(PDO::FETCH_ASSOC);
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -5,53 +14,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="imagenes/LaRueda.png" type="image/x-icon"> 
     <link rel="icon" href="imagenes/LaRueda.png" type="image/png"> 
-    <title>La Rueda Viteña</title>
-    <link rel="stylesheet" href="estilos/estilos.css"> 
     <link rel="stylesheet" href="estilos/principal.css">
+    <title>La Rueda Viteña</title>
+</head>
 <body>
     <?php include 'header.php'; ?>
 
     <main>
-        <section id="inicio">
-            <h2>¿Qué es nuestra Red Social?</h2>
-            <p>Una plataforma para promocionar y compartir experiencias sobre nuestro producto exclusivo.</p>
-        </section>
+        <section class="menu">
+            <h1>Nuestro Menú</h1>
+            
+            <nav class="categorias">
+                <button>Bebidas</button>
+                <button>Comidas</button>
+                <button>Postres</button>
+                <button>Especialidades de la Casa</button>
+            </nav>
 
-        <section id="producto">
-            <h2>Producto Destacado</h2>
-            <img src="imagenes/producto.jpg" alt="Imagen del Producto" />
-            <p>Descripción detallada del producto, sus características y beneficios.</p>
-            <button>Comprar Ahora</button>
-        </section>
-
-        <section id="testimonios">
-            <h2>Testimonios de Usuarios</h2>
-            <ul>
-                <li>"Este producto cambió mi vida!" - Usuario 1</li>
-                <li>"Excelente calidad y servicio." - Usuario 2</li>
-                <li>"Lo recomiendo totalmente." - Usuario 3</li>
-            </ul>
-        </section>
-
-        <section id="contactotanos">
-            <h2>Contacto</h2>
-            <form>
-                <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" name="nombre" required>
-                
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-                
-                <label for="mensaje">Mensaje:</label>
-                <textarea id="mensaje" name="mensaje" required></textarea>
-                
-                <input type="submit" value="Enviar">
-            </form>
+            <section class="productos">
+                <h2>Productos Disponibles</h2>
+                <?php foreach ($productos as $producto): ?>
+                    <div class="producto">
+                        <img src="<?php echo $producto['imagen']; ?>" alt="<?php echo $producto['nombre']; ?>">
+                        <h3><?php echo $producto['nombre']; ?></h3>
+                        <p><?php echo $producto['descripcion']; ?></p>
+                        <p>Precio: $<?php echo number_format($producto['precio'], 2); ?></p>
+                        <form action="agregar_pedido.php" method="POST">
+                            <input type="hidden" name="producto_id" value="<?php echo $producto['id']; ?>">
+                            <input type="hidden" name="precio" value="<?php echo $producto['precio']; ?>">
+                            <input type="number" name="cantidad" min="1" value="1" required>
+                            <button type="submit">Agregar al Carrito</button>
+                        </form>
+                    </div>
+                <?php endforeach; ?>
+            </section>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2023 Tu Marca. Todos los derechos reservados.</p>
+        <p>Información de contacto</p>
+        <p>Síguenos en redes sociales</p>
+        <p><a href="politicas.html">Políticas de Devolución y Privacidad</a></p>
     </footer>
+
+    <script src="scripts/main.js"></script>
 </body>
 </html>
