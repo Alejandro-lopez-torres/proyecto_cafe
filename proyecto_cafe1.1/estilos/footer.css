@@ -1,0 +1,26 @@
+/* Pie de página */
+footer {
+    background-color: #000000;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+footer a {
+    color: #fff;
+    text-decoration: underline;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    nav.categorias {
+        flex-direction: column;
+    }
+
+    nav.categorias button {
+        margin: 10px 0;
+    }
+}
